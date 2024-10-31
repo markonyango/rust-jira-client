@@ -1,0 +1,17 @@
+<table>
+  <thead>
+    <th>Schlüssel</th>
+    <th>Status</th>
+    <th>Zusammenfassung</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let issue of issues$()">
+      <td>{{ issue.key }}</td>
+      <td>{{ issue?.fields?.status?.name }}</td>
+      <td>{{ issue?.fields.summary }}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    Footer from Table
+  </tfoot>
+</table>
