@@ -1,14 +1,56 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class TauriService {
-  public getIssueList(): Observable<JqlResponse> {
-    fetch('http://localhost:8080/rest/api/2/search\?jql\=project\=OPD', { headers: { Authorization: `Basic ${btoa('admin'+':'+'admin')}`}})
-    .then(res => res.json())
-    .then(console.log)
-    .catch(console.error);
-    return of({ ...JQL_MOCK_RESPONSE })
+export class IssuesApiService {
+
+  private http = inject(HttpClient);
+
+  public search(query: string): Observable<JqlResponse> {
+    return this.http.get<any>('http://localhost:8080/rest/api/2/search', {
+      params: {
+        jql: query
+      },
+      headers: {
+        Authorization: `Basic ${btoa('admin'+':'+'admin')}`
+      }
+    })
+  }
+
+  public fetchAll(): Observable<any> {
+    const bodyData = `{
+      "expand": [
+        "names"
+      ],
+      "fields": [
+        "summary",
+        "project",
+        "assignee"
+      ],
+      "fieldsByKeys": false,
+      "issueIdsOrKeys": [
+        "OPD-1",
+        "OPD-2",
+        "10003"
+      ],
+      "properties": []
+    }`;
+    return this.http.post('http://localhost:8080/rest/api/2/issue/bulkfetch', bodyData, {
+      headers: {
+        Authorization: `Basic ${btoa('admin'+':'+'admin')}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+  }
+
+  public getIssue(id: string) {
+    return this.http.get<any>(`http://localhost:8080/rest/api/2/issue/${id}`, {
+      headers: {
+        Authorization: `Basic ${btoa('admin'+':'+'admin')}`
+      }
+    })
   }
 }
 
@@ -37,6 +79,7 @@ export interface Fields {
   components: any[]
   timespent: any
   timeoriginalestimate: any
+  timetracking: any;
   description: any
   project: Project
   fixVersions: any[]

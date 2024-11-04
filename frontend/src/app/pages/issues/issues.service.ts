@@ -1,36 +1,29 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { TauriService } from '../../services/tauri.service';
-import { tap } from 'rxjs';
-
-type State = {
-  issues: any[],
-  selected_issue: number | undefined
-}
+import { inject, Injectable, signal } from '@angular/core';
+import { IssuesApiService } from './services/issues-api.service';
+import { catchError, EMPTY, map, switchMap } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class IssuesService {
-  public readonly state = signal<State>({ issues: [], selected_issue: undefined });
+  private query$ = signal<string>('');
+  private selected_issue$ = signal<string | undefined>(undefined);
 
-  public issues$ = computed(() => this.state().issues);
-  public selected_issue$ = computed(() => this.state().selected_issue);
+  public issues$ = toObservable(this.query$).pipe(
+    switchMap((query) =>
+      this.issues_api_service.search(query).pipe(
+        catchError(() => EMPTY),
+        map((response) => response.issues)
+      )
+    )
+  );
 
-  private tauri_service = inject(TauriService);
+  private issues_api_service = inject(IssuesApiService);
 
-  public constructor() {
-    this.tauri_service.getIssueList().subscribe(response => this.update_issues(response.issues));
+  public search(query: string) {
+    this.query$.set(query);
   }
 
-  public select_issue(id: number) {
-    this.state.update(state => ({
-      ...state,
-      selected_issue: id
-    }))
-  }
-
-  public update_issues(issues: any[]) {
-    this.state.update(state => ({
-      ...state,
-      issues
-    }))
+  public select_issue(id: string) {
+    this.selected_issue$.set(id);
   }
 }

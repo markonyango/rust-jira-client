@@ -1,0 +1,48 @@
+
+<h1>{{ issue().key }}: {{ issue().fields.summary }}</h1>
+
+<section class="issue-details-header">
+  <issue-details [issue]="issue()" />
+  <time-tracking [time_tracking]="issue().fields.timetracking"/>
+</section>
+
+<issue-description [description]="issue().fields.description" />
+
+<section>
+  <h3>Anhänge</h3>
+  <ul>
+    <li *ngFor="let attachment of $any(issue().fields).attachment"></li>
+  </ul>
+</section>
+
+<section>
+  <h3>Personen:</h3>
+  <span>Bearbeiter:</span>
+  <span>Autor:</span>
+</section>
+
+
+
+<section>
+  <h3>Unteraufgaben</h3>
+  <ol>
+    <li *ngFor="let subtask of issue().fields.subtasks">{{ subtask.key }}: {{ subtask.fields.summary }} - {{ subtask.fields.status.statusCategory.name }} - {{ subtask.fields.summary }}</li>
+  </ol>
+</section>
+
+<section>
+  <h3>Arbeitsprotokoll ({{ $any(issue().fields).worklog.total }})</h3>
+  <ng-container *ngFor="let worklog of $any(issue().fields).worklog.worklogs">
+    {{ worklog.created | date }}: {{ worklog.author.name }} - {{ worklog.comment }} - {{ worklog.timeSpent }}
+  </ng-container>
+</section>
+
+
+<comment-list [comment]="$any(issue().fields).comment" />
+
+
+<pre >
+  <code>
+    {{ issue() | json }}
+  </code>
+</pre>

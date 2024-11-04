@@ -1,0 +1,9 @@
+.issue-details-header {
+  display: flex;
+  gap: 2em;
+  margin: 3em 0px;
+
+  * {
+    flex: 0 0 auto;
+  }
+}
