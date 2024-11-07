@@ -1,0 +1,9 @@
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# Remove OpenAPI Generator files from version control
+.travis.yml
+git_push.sh
+src/**/*
+.openapi-generator

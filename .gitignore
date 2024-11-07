@@ -1,3 +1,7 @@
 /target/
 **/*.rs.bk
 Cargo.lock
+docs
+
+# do not version control the openapi spec file for jira
+swagger.v3.json
