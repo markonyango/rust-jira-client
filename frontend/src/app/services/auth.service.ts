@@ -18,9 +18,9 @@ export class AuthService {
 
   public authenticated = computed(() => this.state().username != undefined && this.state().password != undefined);
 
-  public authenticate({username, password, url }: {username: string, password: string, url: string}) {
+  public authenticate({ username, password, url }: { username: string, password: string, url: string }) {
     this.state.update(() => ({ username, password, url }));
-    this.tauriService.invoke<string>('authenticate', { username, password }).subscribe({
+    this.tauriService.invoke<string>('authenticate', { username, password, url }).subscribe({
       error: (e) => console.error(e)
     })
   }
