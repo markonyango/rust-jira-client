@@ -1,6 +1,6 @@
 [workspace]
 
 members = [
-  "jira_api",
+  "jira_api_client",
   "jira-client"
 ]

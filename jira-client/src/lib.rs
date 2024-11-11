@@ -1,4 +1,4 @@
-use jira_api_client::apis::{configuration::Configuration, issues_api::GetIssueParams};
+use jira_api_client::apis::{configuration::Configuration, filters_api::{GetFavouriteFiltersParams, GetFilterParams}, issues_api::GetIssueParams};
 use reqwest::Method;
 use tauri::Manager;
 use tokio::sync::Mutex;
