@@ -1,9 +1,10 @@
 import { ResolveFn, Routes } from '@angular/router';
 import { IssuesComponent } from './issues.component';
 import { IssueDetailsComponent } from './components/issue-details/issue-details.component';
-import { Issue, IssuesApiService, JqlResponse } from './services/issues-api.service';
+import { IssuesApiService } from './services/issues-api.service';
 import { inject } from '@angular/core';
 import { map } from 'rxjs';
+import { Issue } from './issue.type';
 
 const issueResolver: ResolveFn<Issue> = (route, state) => {
   const id = route.paramMap.get('id')!;
@@ -13,10 +14,7 @@ const issueResolver: ResolveFn<Issue> = (route, state) => {
 const issuesResolver: ResolveFn<Issue[]> = (route, state) => {
   const query = route.queryParamMap.get('query') ?? '';
   console.log('Resolving issues route with query:', query);
-  inject(IssuesApiService).fetchAll().subscribe({
-    next: res => console.log(res),
-    error: err => console.error(err)
-  });
+
   return inject(IssuesApiService).search(query).pipe(map(response => response.issues));
 }
 

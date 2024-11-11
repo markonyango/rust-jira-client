@@ -1,0 +1,7 @@
+<mat-form-field>
+  <mat-label>JQL</mat-label>
+  <input matInput type="text" [value]="filter().jql" disabled />
+  <mat-hint>Link zum Filter: <a [href]="filter().viewUrl" target="_blank">hier</a></mat-hint>
+</mat-form-field>
+
+<issue-list [issues]="issues()" />

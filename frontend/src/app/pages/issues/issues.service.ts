@@ -5,10 +5,11 @@ import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class IssuesService {
-  private query$ = signal<string>('');
+  private query = signal<string>('');
+  private query$ = toObservable(this.query);
   private selected_issue$ = signal<string | undefined>(undefined);
 
-  public issues$ = toObservable(this.query$).pipe(
+  public issues$ = this.query$.pipe(
     switchMap((query) =>
       this.issues_api_service.search(query).pipe(
         catchError(() => EMPTY),
@@ -20,7 +21,7 @@ export class IssuesService {
   private issues_api_service = inject(IssuesApiService);
 
   public search(query: string) {
-    this.query$.set(query);
+    this.query.set(query);
   }
 
   public select_issue(id: string) {

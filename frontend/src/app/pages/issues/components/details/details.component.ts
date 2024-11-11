@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
-import { Issue } from '../../services/issues-api.service';
-import { JsonPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { Issue } from '../../issue.type';
 
 @Component({
   standalone: true,
@@ -31,7 +30,7 @@ import { MatCardModule } from '@angular/material/card';
       }
     `,
   ],
-  imports: [JsonPipe, MatCardModule],
+  imports: [MatCardModule],
 })
 export class DetailsComponent {
   public issue = input.required<Issue>();

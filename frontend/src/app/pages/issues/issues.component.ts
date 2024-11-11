@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IssuesService } from './issues.service';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
-import { Issue } from './services/issues-api.service';
+import { IssueListComponent } from "../../shared/issue-list.component";
 
 @Component({
   standalone: true,
@@ -23,13 +23,14 @@ import { Issue } from './services/issues-api.service';
     MatInputModule,
     MatButtonModule,
     MatTableModule,
-    RouterLink
-  ],
+    RouterLink,
+    IssueListComponent
+],
 })
 export class IssuesComponent {
   public service = inject(IssuesService);
 
-  public issues$ = input<Issue[]>([]);
+  public issues$ = inject(IssuesService).issues$;
 
   public displayedColumns = ['key', 'summary', 'status', 'created', 'updated'];
 

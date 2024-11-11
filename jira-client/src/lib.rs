@@ -1,5 +1,6 @@
 use jira_api_client::apis::{configuration::Configuration, filters_api::{GetFavouriteFiltersParams, GetFilterParams}, issues_api::GetIssueParams};
 use reqwest::Method;
+use serde_json::json;
 use tauri::Manager;
 use tokio::sync::Mutex;
 use crate::prelude::*;
@@ -16,9 +17,17 @@ impl AppState {
   pub fn new() -> Self {
     AppState { configuration: Configuration {
       base_path: "http://localhost:8080".to_string(),
-      basic_auth: Some(("admin".to_string(), Some("admin".to_string()))),
+      basic_auth: None,
       ..Configuration::new()
     } }
+  }
+
+  pub fn authenticate(&mut self, username: String, password: String) {
+    self.configuration.basic_auth = Some((username, Some(password)));
+  }
+
+  pub fn logout(&mut self) {
+    self.configuration.basic_auth = None;
   }
 }
 
@@ -33,7 +42,7 @@ pub fn run() {
       .level_for("reqwest", log::LevelFilter::Trace)
       .build()
     )
-    .invoke_handler(tauri::generate_handler![search, get_issue])
+    .invoke_handler(tauri::generate_handler![search, get_issue, get_filters, get_filter, authenticate, logout])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
@@ -67,4 +76,44 @@ async fn get_issue(state: tauri::State<'_, Mutex<AppState>>, id: String) -> Resu
   };
 
   Ok(response)
+}
+
+#[tauri::command]
+async fn get_filters(state: tauri::State<'_, Mutex<AppState>>) -> Result<String> {
+  let configuration = state.lock().await.configuration.clone();
+  let params = GetFavouriteFiltersParams { expand: None };
+
+  let response = match jira_api_client::apis::filters_api::get_favourite_filters(&configuration, params).await {
+    Ok(result) => format!("{}", serde_json::to_string(&result).unwrap()),
+    Err(e) => e.to_string()
+  };
+
+  Ok(response)
+}
+
+#[tauri::command]
+async fn get_filter(state: tauri::State<'_, Mutex<AppState>>, id: i64) -> Result<String> {
+  let configuration = state.lock().await.configuration.clone();
+  let params = GetFilterParams { id, expand: None, override_share_permissions: None };
+
+  let response = match jira_api_client::apis::filters_api::get_filter(&configuration, params).await {
+    Ok(result) => format!("{}", serde_json::to_string(&result).unwrap()),
+    Err(e) => e.to_string()
+  };
+
+  Ok(response)
+}
+
+#[tauri::command]
+async fn authenticate(state: tauri::State<'_, Mutex<AppState>>, username: String, password: String) -> Result<String> {
+  state.lock().await.authenticate(username, password); 
+
+  Ok(json!({ "message": "authenticated" }).to_string())
+}
+
+#[tauri::command]
+async fn logout(state: tauri::State<'_, Mutex<AppState>>) -> Result<String> {
+  state.lock().await.logout(); 
+
+  Ok(json!({ "message": "logged out" }).to_string())
 }

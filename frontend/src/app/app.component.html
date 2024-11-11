@@ -1,9 +1,10 @@
 <nav class="crumbs">
   <ol>
-    <li class="crumb"><a routerLink="/">Home</a></li>
+    <li class="crumb"><a routerLink="/filters">Filters</a></li>
     <li class="crumb"><a routerLink="/issues">Issues</a></li>
   </ol>
   
-  
+  <button *ngIf="authenticated() == true" (click)="logout()">Logout ({{ username() }})</button>
+  <a *ngIf="authenticated() == false" routerLink="/login"><button>Login</button></a>
 </nav>
 <router-outlet/>

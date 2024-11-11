@@ -1,0 +1,8 @@
+<div class="wrapper">
+  <ul>
+    <li *ngFor="let filter of filters()"><a [routerLink]="filter.id" routerLinkActive="active-link">{{ filter.name }}</a></li>
+  </ul>
+  <section>
+    <router-outlet />
+  </section>
+</div>  
