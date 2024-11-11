@@ -22,7 +22,8 @@ impl AppState {
     } }
   }
 
-  pub fn authenticate(&mut self, username: String, password: String) {
+  pub fn authenticate(&mut self, username: String, password: String, url: String) {
+    self.configuration.base_path = url;
     self.configuration.basic_auth = Some((username, Some(password)));
   }
 
@@ -105,8 +106,8 @@ async fn get_filter(state: tauri::State<'_, Mutex<AppState>>, id: i64) -> Result
 }
 
 #[tauri::command]
-async fn authenticate(state: tauri::State<'_, Mutex<AppState>>, username: String, password: String) -> Result<String> {
-  state.lock().await.authenticate(username, password); 
+async fn authenticate(state: tauri::State<'_, Mutex<AppState>>, username: String, password: String, url: String) -> Result<String> {
+  state.lock().await.authenticate(username, password, url); 
 
   Ok(json!({ "message": "authenticated" }).to_string())
 }

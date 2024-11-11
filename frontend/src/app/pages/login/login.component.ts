@@ -9,6 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
   template: `
     <form (ngSubmit)="login()">
       <mat-form-field>
+        <mat-label>URL</mat-label>
+        <input matInput type="text" [(ngModel)]="form.url" name="url" required />
+      </mat-form-field>
+      <mat-form-field>
         <mat-label>Username</mat-label>
         <input matInput type="text" [(ngModel)]="form.username" name="username" required />
       </mat-form-field>
@@ -39,16 +43,16 @@ import { MatButtonModule } from '@angular/material/button';
 export class LoginComponent {
   private authService = inject(AuthService);
 
-  public form: { username: string | undefined, password: string | undefined } = { username: undefined, password: undefined };
+  public form: { username: string | undefined, password: string | undefined, url: string | undefined } = { username: undefined, password: undefined, url: undefined };
 
   public login() {
-    const { username, password } = this.form;
+    const { username, password, url } = this.form;
 
-    if (username == undefined || password == undefined) {
+    if (username == undefined || password == undefined || url == undefined) {
       throw Error('Login fields must be filled out!');
     }
 
-    this.authService.authenticate({ username, password });
+    this.authService.authenticate({ username, password, url });
     history.back()
   }
 }

@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 type State = {
   username: string | undefined,
   password: string | undefined,
+  url: string | undefined
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private state = signal<State>({ username: undefined, password: undefined });
+  private state = signal<State>({ username: undefined, password: undefined, url: undefined });
   private tauriService = inject(TauriService);
   private router = inject(Router);
 
@@ -17,15 +18,15 @@ export class AuthService {
 
   public authenticated = computed(() => this.state().username != undefined && this.state().password != undefined);
 
-  public authenticate({username, password }: {username: string, password: string}) {
-    this.state.update(() => ({ username, password }));
+  public authenticate({username, password, url }: {username: string, password: string, url: string}) {
+    this.state.update(() => ({ username, password, url }));
     this.tauriService.invoke<string>('authenticate', { username, password }).subscribe({
       error: (e) => console.error(e)
     })
   }
 
   public logout() {
-    this.state.update(() => ({ username: undefined, password: undefined }));
+    this.state.update(state => ({ ...state, username: undefined, password: undefined }));
     this.tauriService.invoke<string>('logout').subscribe({ error: (e) => console.error(e) });
     this.router.navigateByUrl('/login');
   }
