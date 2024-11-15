@@ -16,7 +16,8 @@ export class AuthService {
 
   public loginData = computed(() => this.state());
 
-  public authenticated = computed(() => this.state().username != undefined && this.state().password != undefined);
+  // public authenticated = computed(() => this.state().username != undefined && this.state().password != undefined);
+  public authenticated = computed(() => true);
 
   public authenticate({ username, password, url }: { username: string, password: string, url: string }) {
     this.state.update(() => ({ username, password, url }));

@@ -1,0 +1,72 @@
+<mat-card>
+  <mat-card-header>Vorgang erstellen</mat-card-header>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Projekt</mat-label>
+      <mat-select>
+        <mat-option>OPD</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Vorgangstyp</mat-label>
+      <mat-select>
+        <mat-option>Story</mat-option>
+        <mat-option>Technische Story</mat-option>
+        <mat-option>Change</mat-option>
+        <mat-option>Bug</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-divider />
+
+    <mat-form-field>
+      <mat-label>Zusammenfassung</mat-label>
+      <input type="text" matInput />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Autor</mat-label>
+      <input type="text" matInput />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Beschreibung</mat-label>
+      <textarea type="text" matInput></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Lösungsversion</mat-label>
+      <mat-select>
+        <mat-option>tbd</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Priorität</mat-label>
+      <mat-select>
+        <mat-option>1</mat-option>
+        <mat-option>2</mat-option>
+        <mat-option>3</mat-option>
+        <mat-option>4</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Epic-Verknüpfung</mat-label>
+      <mat-select>
+        <mat-option>tbd</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ursprüngliche Schätzung</mat-label>
+      <input type="text" matInput/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Verbleibende Schätzung</mat-label>
+      <input type="text" matInput/>
+    </mat-form-field>
+
+    <mat-divider />
+  </mat-card-content>
+  <mat-card-actions [align]="'end'">
+    <button mat-button>Erstellen</button>
+    <button mat-button mat-dialog-close>Abbrechen</button>
+  </mat-card-actions>
+</mat-card>

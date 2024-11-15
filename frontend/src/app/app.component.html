@@ -4,7 +4,10 @@
     <li class="crumb"><a routerLink="/issues">Issues</a></li>
   </ol>
   
-  <button *ngIf="authenticated() == true" (click)="logout()">Logout ({{ username() }})</button>
-  <a *ngIf="authenticated() == false" routerLink="/login"><button>Login</button></a>
+  <div>
+    <button create-issue>Erstellen</button>
+    <button *ngIf="authenticated() == true" (click)="logout()">Logout ({{ username() }})</button>
+    <a *ngIf="authenticated() == false" routerLink="/login"><button>Login</button></a>
+  </div>
 </nav>
 <router-outlet/>
