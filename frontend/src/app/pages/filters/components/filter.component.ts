@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
-import { IssueListComponent } from '../../../shared/issue-list.component';
+import { IssueListComponent } from '../../../shared/components/issue-list/issue-list.component';
 
 @Component({
   standalone: true,

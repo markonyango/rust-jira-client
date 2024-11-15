@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
-import { IssueListComponent } from "../../shared/issue-list.component";
+import { IssueListComponent } from "../../shared/components/issue-list/issue-list.component";
 
 @Component({
   standalone: true,
